@@ -104,6 +104,7 @@ Organizations:
         Rule: "OR('SupplierMSP.admin')"
 ``` 
 2.1.2 Define the Channel Configurations:
+
 Next, you'll need to define the profiles for your channels. Since your network is new and you're adding this configuration, you'll also need to define the consortium and the default channel configurations. Here's how you might define the profiles for your channels, including the specific peers for each organization within those channels:
 Example Entry for Channels:
 ```yaml
