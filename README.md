@@ -74,12 +74,13 @@ Adjust the Organizations section under each channel profile to include the corre
 After configuring your organizations and channels, you'll need to generate the necessary cryptographic material and channel artifacts.
 
 *Generate Crypto Material:*
-```
+```bash
 cryptogen generate --config=./organizations/cryptogen/crypto-config.yaml
 ```
 
-*Generate Channel Artifacts:*
-```
+*Generate Channel Artifacts:* Generate the Genesis Block:
+The genesis block is the first block on the chain and is used to bootstrap the network. You can generate it using the configtxgen tool with a command like:
+```bash
 configtxgen -profile OEMChannel -outputCreateChannelTx ./channel-artifacts/oemchannel.tx -channelID oemchannel
 configtxgen -profile AirlineOEMChannel -outputCreateChannelTx ./channel-artifacts/airlineoemchannel.tx -channelID airlineoemchannel
 ```
@@ -89,7 +90,7 @@ configtxgen -profile AirlineOEMChannel -outputCreateChannelTx ./channel-artifact
 Real case Sigrid:
 </span>
 For every organization:
-```
+```bash
 cryptogen generate --config=./crypto-config-oem.yaml --output="organizations"
 cryptogen generate --config=./crypto-config-airline.yaml --output="organizations"
 cryptogen generate --config=./crypto-config-supplier.yaml --output="organizations"
@@ -105,7 +106,7 @@ Use the provided network scripts or Docker Compose files (if available) to start
 **Step 5: Create and Join Channels**
 
 For each channel, you'll need to create the channel and then join the relevant peers to it.
-```
+```bash
 peer channel create -o orderer.example.com:7050 -c oemchannel -f ./channel-artifacts/oemchannel.tx
 peer channel join -b oemchannel.block
 ```
