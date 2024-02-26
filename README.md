@@ -58,7 +58,6 @@ File to Edit: configtx.yaml
 
 2.1.1 Define the Organizations:
 
-same file:
 ```yaml
 Organizations:
   - &OEM
