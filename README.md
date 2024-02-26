@@ -13,7 +13,7 @@ You'll need to define your organizations (OEM, Supplier, Airline) and their peer
 **Path:** /test-network/organizations/cryptogen/
 **Files to Edit:** If using cryptogen, edit crypto-config.yaml to include your organizations and peers.
 
-**Example Entry for OEM in crypto-config.yaml:**
+**Example Entry for OEM in crypto-config-oem.yaml:**
 
 
 ```yaml
