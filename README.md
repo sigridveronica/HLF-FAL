@@ -70,8 +70,9 @@ cryptogen generate --config=./organizations/cryptogen/crypto-config.yaml
 configtxgen -profile OEMChannel -outputCreateChannelTx ./channel-artifacts/oemchannel.tx -channelID oemchannel
 configtxgen -profile AirlineOEMChannel -outputCreateChannelTx ./channel-artifacts/airlineoemchannel.tx -channelID airlineoemchannel
 ```
-
+<span style="color:red">
 Real case Sigrid:
+</span>
 For every organization:
 ```
 cryptogen generate --config=./crypto-config-oem.yaml --output="organizations"
