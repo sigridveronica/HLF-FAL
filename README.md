@@ -146,6 +146,10 @@ After updating your configtx.yaml, you'll use the configtxgen tool to generate t
 
 The genesis block is the first block on the blockchain and serves as the starting point of the network.
 
+```json
+inside the cryptogen:
+```
+
 2.3.1: Generate the Genesis Block for the Consortium
 ```bash
 configtxgen -profile OEMChannel -outputBlock ./channel-artifacts/genesis.block -channelID system-channel
