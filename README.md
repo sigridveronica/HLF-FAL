@@ -7,6 +7,7 @@
 
 **Step 1: Define Organizations and Peers**
 
+1. Create Crypto Material for Organizations:
 **Organizations and Peers Configuration:**
 You'll need to define your organizations (OEM, Supplier, Airline) and their peers in the network configuration files. 
 
@@ -29,6 +30,21 @@ PeerOrgs:
 
 Adjust the Count under Template for the number of peers and add similar entries for Supplier and Airline with their respective peer counts.
 
+
+2. Generate the Crypto Material: Run the cryptogen tool using your custom crypto-config.yaml for each organization.
+
+Same directory (/Users/sigridveronica/go/src/github.com/sigridveronica/fabric-samples/test-network/organizations/cryptogen)
+
+Here, Generate the Crypto Material: Run the cryptogen tool using your custom crypto-config.yaml for each organization.
+
+cryptogen generate --config=./crypto-config.yaml —output="organizations"
+
+For every organization:
+```bash
+cryptogen generate --config=./crypto-config-oem.yaml --output="organizations"
+cryptogen generate --config=./crypto-config-airline.yaml --output="organizations"
+cryptogen generate --config=./crypto-config-supplier.yaml --output="organizations"
+```
 **Step 2: Configure Channel Artifacts**
 
 *Channel Configuration:*
