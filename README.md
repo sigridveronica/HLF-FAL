@@ -71,6 +71,15 @@ configtxgen -profile OEMChannel -outputCreateChannelTx ./channel-artifacts/oemch
 configtxgen -profile AirlineOEMChannel -outputCreateChannelTx ./channel-artifacts/airlineoemchannel.tx -channelID airlineoemchannel
 ```
 
+Real case Sigrid:
+For every organization:
+```
+cryptogen generate --config=./crypto-config-oem.yaml --output="organizations"
+cryptogen generate --config=./crypto-config-airline.yaml --output="organizations"
+cryptogen generate --config=./crypto-config-supplier.yaml --output="organizations"
+```
+
+
 Replace oemchannel and airlineoemchannel with your channel names and adjust profiles as per your configtx.yaml.
 
 **Step 4: Start the Network**
