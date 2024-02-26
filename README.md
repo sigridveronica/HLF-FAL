@@ -33,7 +33,7 @@ Adjust the Count under Template for the number of peers and add similar entries 
 
 2. Generate the Crypto Material: Run the cryptogen tool using your custom crypto-config.yaml for each organization.
 
-Same directory (/Users/sigridveronica/go/src/github.com/sigridveronica/fabric-samples/test-network/organizations/cryptogen)
+Same directory: fabric-samples/test-network/organizations/cryptogen
 
 Here, Generate the Crypto Material: Run the cryptogen tool using your custom crypto-config.yaml for each organization.
 
@@ -48,7 +48,7 @@ cryptogen generate --config=./crypto-config-supplier.yaml --output="organization
 **Step 2: Configure Channel Artifacts**
 
 
-1. Edit the configtx.yaml File: Modify the configtx.yaml file to include your new organizations. You can use the structure in /test-network/addOrg3/configtx.yaml as a reference. Define each organization under the Organizations: section.
+2.1. Edit the configtx.yaml File: Modify the configtx.yaml file to include your new organizations. You can use the structure in /test-network/addOrg3/configtx.yaml as a reference. Define each organization under the Organizations: section.
 
 *Channel Configuration:*
 Channels are defined in the configtx.yaml file. You'll need to define your channels and which organizations are part of each channel.
@@ -56,27 +56,117 @@ Channels are defined in the configtx.yaml file. You'll need to define your chann
 Path: /test-network/configtx/
 File to Edit: configtx.yaml
 
-
-
+2.1.1 Define the Organizations:
+Organizations:
+  - &OEM
+    Name: OEMMSP
+    ID: OEMMSP
+    MSPDir: ../organizations/peerOrganizations/oem.example.com/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('OEMMSP.member')"
+      Writers:
+        Type: Signature
+        Rule: "OR('OEMMSP.member')"
+      Admins:
+        Type: Signature
+        Rule: "OR('OEMMSP.admin')"
+  - &Airline
+    Name: AirlineMSP
+    ID: AirlineMSP
+    MSPDir: ../organizations/peerOrganizations/airline.example.com/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('AirlineMSP.member')"
+      Writers:
+        Type: Signature
+        Rule: "OR('AirlineMSP.member')"
+      Admins:
+        Type: Signature
+        Rule: "OR('AirlineMSP.admin')"
+  - &Supplier
+    Name: SupplierMSP
+    ID: SupplierMSP
+    MSPDir: ../organizations/peerOrganizations/supplier.example.com/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('SupplierMSP.member')"
+      Writers:
+        Type: Signature
+        Rule: "OR('SupplierMSP.member')"
+      Admins:
+        Type: Signature
+        Rule: "OR('SupplierMSP.admin')"
+    
+2.1.2 Define the Channel Configurations:
+Next, you'll need to define the profiles for your channels. Since your network is new and you're adding this configuration, you'll also need to define the consortium and the default channel configurations. Here's how you might define the profiles for your channels, including the specific peers for each organization within those channels:
 Example Entry for Channels:
 ```yaml
 Profiles:
-    OEMChannel:
-        Consortium: SampleConsortium
-        <<: *ChannelDefaults
-        Application:
-            <<: *ApplicationDefaults
-            Organizations:
-                - *OEM
-    AirlineOEMChannel:
-        Consortium: SampleConsortium
-        <<: *ChannelDefaults
-        Application:
-            <<: *ApplicationDefaults
-            Organizations:
-                - *OEM
-                - *Airline
+  OEMChannel:
+    Consortium: SampleConsortium
+    Application:
+      <<: *ApplicationDefaults
+      Organizations:
+        - *OEM
+      Capabilities:
+        <<: *ApplicationCapabilities
+  AirlineOEMChannel:
+    Consortium: SampleConsortium
+    Application:
+      <<: *ApplicationDefaults
+      Organizations:
+        - *OEM
+        - *Airline
+      Capabilities:
+        <<: *ApplicationCapabilities
+  SupplierOEMChannel:
+    Consortium: SampleConsortium
+    Application:
+      <<: *ApplicationDefaults
+      Organizations:
+        - *OEM
+        - *Supplier
+      Capabilities:
+        <<: *ApplicationCapabilities
 ```
+2.2 Specify Peers in Channel Configurations
+
+Hyperledger Fabric's configtx.yaml does not directly specify peers within each channel in this file. Instead, peers are added to channels and configured to endorse transactions as part of the network setup and channel creation process, typically using the Fabric CLI or SDKs. The configtx.yaml file is used to define the structure of the network at a higher level, including which organizations are part of which channels, but not the specific peers.
+
+2.3 Generate the Genesis Block and Channel Configuration Transactions
+
+After updating your configtx.yaml, you'll use the configtxgen tool to generate the genesis block for the system channel and the channel creation transactions for your custom channels.
+
+The genesis block is the first block on the blockchain and serves as the starting point of the network.
+
+2.3.1: Generate the Genesis Block for the Consortium
+```bash
+configtxgen -profile OEMChannel -outputBlock ./channel-artifacts/genesis.block -channelID system-channel
+```
+2.3.2: Create Channel Transaction for OEMChannel
+```bash
+configtxgen -profile OEMChannel -outputCreateChannelTx ./channel-artifacts/OEMChannel.tx -channelID oemchannel
+```
+2.3.3 Create Channel Transaction for AirlineOEMChannel
+```bash
+configtxgen -profile AirlineOEMChannel -outputCreateChannelTx ./channel-artifacts/AirlineOEMChannel.tx -channelID airlineoemchannel
+```
+2.3.4 Create Channel Transaction for SupplierOEMChannel
+```bash
+configtxgen -profile SupplierOEMChannel -outputCreateChannelTx ./channel-artifacts/SupplierOEMChannel.tx -channelID supplieroemchannel
+```
+
+
+-------- NOT SURE THIS IS CORRECT ----------
+
+```bash
+configtxgen -profile SampleMultiNodeEtcdRaft -channelID system-channel -outputBlock ./channel-artifacts/genesis.block
+```
+SampleMultiNodeEtcdRaft is a commonly used profile for networks that use the Raft consensus protocol. You should replace this with the profile name that matches your network's configuration in configtx.yaml. The system-channel is a default name for the system channel; you might need to adjust it according to your setup.
 
 2. Generate Channel Configuration Transaction: Use the configtxgen tool to create the channel creation transaction and channel update transactions for each channel.
 
