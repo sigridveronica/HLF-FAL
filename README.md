@@ -66,6 +66,7 @@ configtxgen -profile OEMAirlineChannel -outputCreateChannelTx ./channel-artifact
 # Generate the channel configuration transaction for AllOrgsChannel
 configtxgen -profile AllOrgsChannel -outputCreateChannelTx ./channel-artifacts/allorgschannel.tx -channelID allorgschannel
 ```
+Now the files oemairlinechannel.tx and allorgschannel.tx will be generated insite channel-artifacts. Replace ./channel-artifacts/ with the actual path where you want to store the generated channel artifacts.
 
 Adjust the Organizations section under each channel profile to include the correct organizations.
 
