@@ -37,6 +37,8 @@ Channels are defined in the configtx.yaml file. You'll need to define your chann
 Path: /test-network/configtx/
 File to Edit: configtx.yaml
 
+
+
 Example Entry for Channels:
 ```yaml
 Profiles:
@@ -55,6 +57,14 @@ Profiles:
             Organizations:
                 - *OEM
                 - *Airline
+```
+
+```bash
+# Generate the channel configuration transaction for OEMAirlineChannel
+configtxgen -profile OEMAirlineChannel -outputCreateChannelTx ./channel-artifacts/oemairlinechannel.tx -channelID oemairlinechannel
+
+# Generate the channel configuration transaction for AllOrgsChannel
+configtxgen -profile AllOrgsChannel -outputCreateChannelTx ./channel-artifacts/allorgschannel.tx -channelID allorgschannel
 ```
 
 Adjust the Organizations section under each channel profile to include the correct organizations.
