@@ -47,6 +47,9 @@ cryptogen generate --config=./crypto-config-supplier.yaml --output="organization
 ```
 **Step 2: Configure Channel Artifacts**
 
+
+1. Edit the configtx.yaml File: Modify the configtx.yaml file to include your new organizations. You can use the structure in /test-network/addOrg3/configtx.yaml as a reference. Define each organization under the Organizations: section.
+
 *Channel Configuration:*
 Channels are defined in the configtx.yaml file. You'll need to define your channels and which organizations are part of each channel.
 
@@ -74,6 +77,9 @@ Profiles:
                 - *OEM
                 - *Airline
 ```
+
+2. Generate Channel Configuration Transaction: Use the configtxgen tool to create the channel creation transaction and channel update transactions for each channel.
+
 
 ```bash
 # Generate the channel configuration transaction for OEMAirlineChannel
